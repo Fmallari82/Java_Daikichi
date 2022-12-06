@@ -1,17 +1,19 @@
 package com.francisco.daikichiroutes.controllers;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
-@RestController
+
+@Controller
 public class DaikichiController {
-
-	public DaikichiController() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@RequestMapping("/daikichi")
 	public String welcome() {
@@ -37,4 +39,35 @@ public class DaikichiController {
 			return "You have enjoyed the fruits of your labor but now is a great time to spend time with family and friends";
 		}
 	}
+	 @GetMapping("/omikuji")
+	 	public String form() {
+		 
+		 return "omikujiForm.jsp";
+	 }
+	 @PostMapping("/omikuji/process")
+	 public String processForm( 
+			 @RequestParam("number") int number, 
+			 @RequestParam("city") String city, 
+			 @RequestParam("person") String person, 
+			 @RequestParam("hobby") String hobby, 
+			 @RequestParam("thing") String thing,
+			 @RequestParam("niceSaying") String niceSaying, 
+			 HttpSession session) 
+	 {
+		 session.setAttribute("number", number);
+		 session.setAttribute("city", city);
+		 session.setAttribute("person", person);
+		 session.setAttribute("hobby", hobby);
+		 session.setAttribute("thing", thing);
+		 session.setAttribute("niceSaying", niceSaying);
+		 return "redirect:/omikuji/show";
+	 }
+	 
+	 
+	 @GetMapping("/omikuji/show")
+	 public String results() {
+
+		 return "omikujiResults.jsp";
+	 }
 }
+
